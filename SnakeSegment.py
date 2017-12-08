@@ -2,29 +2,16 @@ import pygame
 from GameObj import GameObj
 import random
 
-colors = ["red", "green", "blue", "orange", "purple"]
-
 class SnakeSegment(GameObj):
-    def __init__(self, x, y, speed, boundary_x, boundary_y, head = False, default_direction = "up"):
+    def __init__(self, x, y, speed, boundary_x, boundary_y, head = False):
+        self.colors = ["red", "green", "blue", "orange", "purple", "black", "pink"]
         if head:
             super().__init__(x, y, 12, 12, "white")
         else:
-            super().__init__(x, y, 12, 12, colors[random.randint(0, len(colors) - 1)])
+            super().__init__(x, y, 12, 12, self.colors[random.randint(0, len(self.colors) - 1)])
         self.boundary_x = boundary_x
         self.boundary_y = boundary_y
         self.speed = speed
-        self.current_direction = default_direction
-
-    def change_direction(self, direction):
-        # we go down if and only if our current direction is not up, so we can go down if
-        # we are already down, left or right
-        if direction == "down" and self.current_direction == "up":
-            return
-        # similarly if we are
-        if direction == "up" and self.current_direction == "down":
-            return
-        # then I change the current_direction itself to the new direction provided
-        self.current_direction = direction
 
     # draws the segment
     def draw(self, screen, x, y):

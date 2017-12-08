@@ -6,7 +6,7 @@ import pygame
 
 class Food(GameObj):
     def __init__(self, x, y):
-        super().__init__(x, y, 10, 10, "white")
+        super().__init__(x, y, 8, 8, "white")
 
     def draw(self, screen):
         # make this into a circle later
