@@ -14,6 +14,10 @@ class SnakeSegment(GameObj):
         self.previous_direction = self.current_direction
 
     def change_direction(self, direction):
+        # we go down if and only if our current direction is not up, so we can go down if
+        # we are already down, left or right
+        if direction == "down" and self.current_direction == "up":
+            return
         # I change the previous direction to what current_direction is
         self.previous_direction = self.current_direction
         # then I change the current_direction itself to the new direction provided
