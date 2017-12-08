@@ -48,6 +48,9 @@ class SnakeGame(object):
             # and push another food at another random location
             self.food_stack.append(Food(random.randint(0, 700), random.randint(0, 500)))
 
+            # finally we grow the snake as well by adding a new segment to the snake's body
+            self.snake.grow()
+
 
         pygame.display.flip()
 
