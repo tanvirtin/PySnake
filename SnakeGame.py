@@ -15,16 +15,29 @@ class SnakeGame(object):
         self.snakes_speed = 10
 
         # takes in x, y of the snake and the speed of the snake
-        self.snake = Snake(800 / 2, 600 /2, self.snakes_speed, 800, 600)
+        self.snake = Snake(50, 50, self.snakes_speed, 800, 600)
         self.food_stack = [Food(random.randint(0, 700), random.randint(0, 500))]
 
 
     def consumption_check(self):
-        # as is snake size bs is apple size
         if (self.snake.get_x() < self.food_stack[0].get_x() + self.food_stack[0].get_size() and self.snake.get_x() + self.snake.get_size() > self.food_stack[0].get_x() and self.snake.get_y() < self.food_stack[0].get_y() + self.food_stack[0].get_size() and self.snake.get_y() + self.snake.get_size() > self.food_stack[0].get_y()):
             return True
         else:
             return False
+
+    def self_collision_check(self):
+        bodies = self.snake.get_body()
+
+        seg_count = 0
+        for segment in bodies:
+            # we check for collision only if theres more than 2 head
+            if seg_count > 2:
+                if (self.snake.get_x() < segment.get_x() + segment.get_size() and self.snake.get_x() + segment.get_size() > segment.get_x() and self.snake.get_y() < segment.get_y() + segment.get_size() and self.snake.get_y() + self.snake.get_size() > segment.get_y()):
+                    return True
+                else:
+                    return False
+            seg_count += 1
+
 
     def single_player_loop(self, key_input = None):
         pygame.event.pump()
@@ -51,8 +64,9 @@ class SnakeGame(object):
             # finally we grow the snake as well by adding a new segment to the snake's body
             self.snake.grow()
 
-
         pygame.display.flip()
+
+        return self.self_collision_check()
 
 
 
@@ -61,17 +75,37 @@ if __name__ == "__main__":
 
     while not keyboard.is_pressed("q"):
         if keyboard.is_pressed("w"):
-            game.single_player_loop("up")
+            end = game.single_player_loop("up")
 
         elif keyboard.is_pressed("s"):
-            game.single_player_loop("down")
+            end = game.single_player_loop("down")
 
         elif keyboard.is_pressed("a"):
-            game.single_player_loop("left")
+            end = game.single_player_loop("left")
 
         elif keyboard.is_pressed("d"):
-            game.single_player_loop("right")
+            end = game.single_player_loop("right")
 
         else:
-            game.single_player_loop()
+            end = game.single_player_loop()
+        if end:
+            break;
         time.sleep(0.05)
+
+    # while not keyboard.is_pressed("q"):
+    #     action = random.randint(0, 4)
+    #     if action == 0:
+    #         game.single_player_loop("up")
+    #
+    #     elif action == 1:
+    #         game.single_player_loop("down")
+    #
+    #     elif action == 2:
+    #         game.single_player_loop("left")
+    #
+    #     elif action == 3:
+    #         game.single_player_loop("right")
+    #
+    #     else:
+    #         game.single_player_loop()
+    #     time.sleep(0.05)
