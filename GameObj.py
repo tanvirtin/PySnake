@@ -9,3 +9,13 @@ class GameObj(object):
         self.dimensions = [w, h]
         # color is the color of the object
         self.color = pygame.color.Color(color)
+
+
+    def get_x(self):
+        return self.coordinates[0]
+
+    def get_y(self):
+        return self.coordinates[1]
+
+    def get_size(self):
+        return self.dimensions[0]

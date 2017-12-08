@@ -18,9 +18,15 @@ class SnakeGame(object):
         self.snake = Snake(50, 50, self.snakes_speed, 800, 600)
         self.food_stack = [Food(random.randint(0, 700), random.randint(0, 500))]
 
+
+    def consumption_check(self):
+        # as is snake size bs is apple size
+        if (self.snake.get_x() < self.food_stack[0].get_x() + self.food_stack[0].get_size() and self.snake.get_x() + self.snake.get_size() > self.food_stack[0].get_x() and self.snake.get_y() < self.food_stack[0].get_y() + self.food_stack[0].get_size() and self.snake.get_y() + self.snake.get_size() > self.food_stack[0].get_y()):
+            return True
+        else:
+            return False
+
     def single_player_loop(self, key_input = None):
-        # self.food_stack.pop()
-        # self.food_stack.append(Food(random.randint(0, 700), random.randint(0, 500)))
         pygame.event.pump()
 
         self.screen.fill(self.background_color)
@@ -34,6 +40,14 @@ class SnakeGame(object):
         else:
             self.snake.change_direction(key_input)
             self.snake.draw(self.screen)
+
+        # check here if the snake ate the food
+        if self.consumption_check():
+            # we pop the food from the stack
+            self.food_stack.pop()
+            # and push another food at another random location
+            self.food_stack.append(Food(random.randint(0, 700), random.randint(0, 500)))
+
 
         pygame.display.flip()
 

@@ -42,12 +42,12 @@ class SnakeSegment(GameObj):
             # down direction
             self.coordinates[0] -= self.speed
 
-        self.__boundary_check()
+        self.boundary_check()
 
         pygame.draw.rect(screen, self.color, pygame.Rect(self.coordinates[0], self.coordinates[1], self.dimensions[0], self.dimensions[1]))
 
     # checks the boundary for the segment
-    def __boundary_check(self):
+    def boundary_check(self):
         # y boundary check if we go too up
         if self.coordinates[1] < 0:
             self.coordinates[1] = self.boundary_y
