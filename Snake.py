@@ -19,22 +19,36 @@ class Snake(SnakeSegment):
             # if the body is empty then the previous segment is the self itself
             prev_segment = self
 
-        x = self.get_x()
-        y = self.get_y()
+        x = prev_segment.get_x()
+        y = prev_segment.get_y()
 
         if prev_segment.current_direction == "up":
-            self.body.append(SnakeSegment(x, y + 15, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
+            self.body.append(SnakeSegment(x, y + 25, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
         elif prev_segment.current_direction == "down":
-            self.body.append(SnakeSegment(x, y - 15, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
+            self.body.append(SnakeSegment(x, y - 25, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
         elif prev_segment.current_direction == "left":
-            self.body.append(SnakeSegment(x + 15, y, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
+            self.body.append(SnakeSegment(x + 25, y, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
         elif prev_segment.current_direction == "right":
-            self.body.append(SnakeSegment(x - 15, y, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
+            self.body.append(SnakeSegment(x - 25, y, self.speed, self.boundary_x, self.boundary_y, False, prev_segment.current_direction))
 
         self.reward += 1
 
+    # MAIN GAME LOGIC TO UPDATE THE BODIES
+    # this function will be invoked and the head's previous x and y coordinates
+    # before it is about to be redrawn again in the current game loop will be passed in
+    def update_body(self, prev_x, prev_y):
+        # each segment in the body will return its previous x and y coordinates before it gets updated
+        for segment in self.body:
+            # each segment basically gets updated by the previous x and y coordinates of the segment it, the x and y coordinate
+            # is the previous segments x and y coordinates before it gets redrawn, kind of tricky to understand
+            prev_x, prev_y = segment.draw(screen, prev_x, prev_y)
+
     # draws the segment
     def draw(self, screen):
+        # previous x and y coordinates to be passed on to the segments
+        prev_x = self.coordinates[0]
+        prev_y = self.coordinates[1]
+
         # in pygame the y coordinates start at the maximum value or in other words it is flipped
         if self.current_direction == "up":
             # up direction
@@ -56,5 +70,5 @@ class Snake(SnakeSegment):
 
         pygame.draw.rect(screen, self.color, pygame.Rect(self.coordinates[0], self.coordinates[1], self.dimensions[0], self.dimensions[1]))
 
-        for segment in self.body:
-            segment.draw(screen)
+
+        self.update_body(prev_x, prev_y)

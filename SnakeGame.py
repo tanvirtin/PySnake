@@ -12,7 +12,7 @@ class SnakeGame(object):
     def __init__(self, ai_mode = False):
         self.screen = pygame.display.set_mode((800, 600), pygame.HWSURFACE)
         self.background_color = pygame.Color(73, 73, 73)
-        self.snakes_speed = 4
+        self.snakes_speed = 8
 
         # takes in x, y of the snake and the speed of the snake
         self.snake = Snake(50, 50, self.snakes_speed, 800, 600)
