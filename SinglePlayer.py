@@ -21,6 +21,7 @@ class SinglePlayer(object):
             return False
 
     def self_collision_check(self):
+        # THERE IS A BUG HERE PLS FIX THIS
         bodies = self.snake.get_body()
 
         seg_count = 0
@@ -29,9 +30,11 @@ class SinglePlayer(object):
             if seg_count > 2:
                 if (self.snake.get_x() < segment.get_x() + segment.get_size() and self.snake.get_x() + segment.get_size() > segment.get_x() and self.snake.get_y() < segment.get_y() + segment.get_size() and self.snake.get_y() + self.snake.get_size() > segment.get_y()):
                     return True
-                else:
-                    return False
             seg_count += 1
+
+        # False is returend if and ONLY if we get out of the loop and have iterated over every single segment and found no collision
+        # this prevents the check from just checking one segment finding no collision and returning
+        return False
 
 
     def game_loop(self, key_input = None):
