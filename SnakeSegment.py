@@ -4,11 +4,13 @@ import random
 
 class SnakeSegment(GameObj):
     def __init__(self, x, y, speed, boundary_x, boundary_y, head = False, default_direction = "up"):
-        self.colors = ["red", "green", "blue", "orange", "purple", "black", "pink"]
-        if head:
-            super().__init__(x, y, 12, 12, "white")
-        else:
-            super().__init__(x, y, 12, 12, self.colors[random.randint(0, len(self.colors) - 1)])
+        self.body_size = 17
+        super().__init__(x, y, self.body_size, self.body_size)
+        self.weird_boundary_offset = 19
+        if not head:
+            # the image of the body is stored here
+            # I need to scale the image to correct size
+            self.body = pygame.transform.scale(pygame.image.load("./assets/body.png"), (self.body_size, self.body_size))
         self.boundary_x = boundary_x
         self.boundary_y = boundary_y
         self.speed = speed
@@ -35,8 +37,8 @@ class SnakeSegment(GameObj):
         self.current_direction = direction
 
 
-    # draws the segment
-    def draw(self, screen, x, y):
+    # draws the segment, go_through by default is false
+    def draw(self, screen, x, y, go_through = False):
 
         # the previous coordinates will be stored in variables and returned, for the segment before the values gets
         # updated to get redrawn
@@ -48,14 +50,17 @@ class SnakeSegment(GameObj):
         self.coordinates[0] = x
         self.coordinates[1] = y
 
-        self.boundary_check()
+        # the segments go through the wall if specified
+        if go_through:
+            self.boundary_check_through()
 
-        pygame.draw.rect(screen, self.color, pygame.Rect(self.coordinates[0], self.coordinates[1], self.dimensions[0], self.dimensions[1]))
+        screen.blit(self.body, (self.coordinates[0], self.coordinates[1]))
 
         return prev_x, prev_y, prev_direction
 
     # checks the boundary for the segment
-    def boundary_check(self):
+    # goes through the boundary and comes through the other end
+    def boundary_check_through(self):
         # y boundary check if we go too up
         if self.coordinates[1] < 0:
             self.coordinates[1] = self.boundary_y
@@ -66,9 +71,14 @@ class SnakeSegment(GameObj):
 
 
         # x boundary check if we go too right
-        elif self.coordinates[0] > self.boundary_x:
+        elif self.coordinates[0] > self.boundary_x - self.weird_boundary_offset:
             self.coordinates[0] = 0
 
         # x boundary check we go too left
         elif self.coordinates[0] < 0:
             self.coordinates[0] = self.boundary_x
+
+    def boundary_collision(self):
+        if self.coordinates[1] < 0 or self.coordinates[1] > self.boundary_y - self.weird_boundary_offset or self.coordinates[0] > self.boundary_x - self.weird_boundary_offset or self.coordinates[0] < 0:
+            return True
+        return False

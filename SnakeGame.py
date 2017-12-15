@@ -5,12 +5,13 @@ import time
 import keyboard
 from Snake import Snake
 from SinglePlayer import SinglePlayer
+from util import *
 
 random.seed(42)
 
 class SnakeGame(object):
     def __init__(self, ai_mode = False):
-        self.screen = pygame.display.set_mode((800, 600), pygame.HWSURFACE)
+        self.screen = pygame.display.set_mode(window_size(), pygame.HWSURFACE)
         self.snakes_speed = 10
 
         if not ai_mode:
@@ -37,8 +38,9 @@ if __name__ == "__main__":
         elif keyboard.is_pressed("d"):
             direction = "right"
 
-        end = game.sp_game_loop(direction)
+        wall_collision, body_collision = game.sp_game_loop(direction)
 
-        if end:
-            game.sp.snake = Snake(50, 50, 10, 800, 600)
-        time.sleep(0.05)
+        # new snake is made if this happens
+        if wall_collision or body_collision:
+            game.sp.snake = Snake(50, 50, 10, window_size()[0], window_size()[0])
+        time.sleep(0.02)

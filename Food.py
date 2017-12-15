@@ -6,8 +6,8 @@ import pygame
 
 class Food(GameObj):
     def __init__(self, x, y):
-        super().__init__(x, y, 8, 8, "white")
+        super().__init__(x, y, 20, 20)
+        self.food_img = pygame.transform.scale(pygame.image.load("./assets/food.png"), (self.dimensions[0], self.dimensions[0]))
 
     def draw(self, screen):
-        # make this into a circle later
-        pygame.draw.ellipse(screen, self.color, pygame.Rect(self.coordinates[0], self.coordinates[1], self.dimensions[0], self.dimensions[1]))
+        screen.blit(self.food_img, (self.coordinates[0], self.coordinates[1]))

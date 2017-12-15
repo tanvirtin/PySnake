@@ -2,13 +2,16 @@ from Player import Player
 from Snake import Snake
 import pygame
 import random
+from util import *
 
 
 class SinglePlayer(Player):
     def __init__(self, screen, speed):
-        super().__init__(screen, speed)
+        super().__init__(screen)
         # takes in x, y of the snake and the speed of the snake
-        self.snake = Snake(50, 50, self.snakes_speed, 800, 600)
+        self.snakes_speed = speed
+        self.snake = Snake(50, 50, self.snakes_speed, window_size()[0], window_size()[0])
+        self.go_through_boundary = False
 
     def consumption_check(self):
         if self.collision(self.snake, self.food_stack[0]):
@@ -41,11 +44,11 @@ class SinglePlayer(Player):
             food.draw(self.screen)
 
         if not key_input:
-            self.snake.draw(self.screen)
+            boundary_collision_check = self.snake.draw(self.screen, self.go_through_boundary)
 
         else:
             self.snake.change_direction(key_input)
-            self.snake.draw(self.screen)
+            boundary_collision_check = self.snake.draw(self.screen, self.go_through_boundary)
 
         # check here if the snake ate the food
         if self.consumption_check():
@@ -57,4 +60,4 @@ class SinglePlayer(Player):
 
         pygame.display.flip()
 
-        return self.self_collision_check()
+        return boundary_collision_check, self.self_collision_check()
