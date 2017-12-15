@@ -1,2 +1,2 @@
-def window_size():
-    return (500, 500)
+WINDOW_SIZE = (500, 500)
+SPEED = 10

@@ -5,7 +5,7 @@ import pygame
 class Snake(SnakeSegment):
     def __init__(self, x, y, speed, boundary_x, boundary_y):
             super().__init__(x, y, speed, boundary_x, boundary_y, head = True)
-            self.head_size = 17
+            self.head_size = 20
             # contains the segments which make up the body
             self.body = []
             self.reward = 0

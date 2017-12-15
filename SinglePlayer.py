@@ -10,7 +10,7 @@ class SinglePlayer(Player):
         super().__init__(screen)
         # takes in x, y of the snake and the speed of the snake
         self.snakes_speed = speed
-        self.snake = Snake(50, 50, self.snakes_speed, window_size()[0], window_size()[0])
+        self.snake = Snake(50, 50, self.snakes_speed, WINDOW_SIZE[0], WINDOW_SIZE[0])
         self.go_through_boundary = False
 
     def consumption_check(self):

@@ -4,7 +4,7 @@ import random
 
 class SnakeSegment(GameObj):
     def __init__(self, x, y, speed, boundary_x, boundary_y, head = False, default_direction = "up"):
-        self.body_size = 17
+        self.body_size = 20
         super().__init__(x, y, self.body_size, self.body_size)
         self.weird_boundary_offset = 19
         if not head:
