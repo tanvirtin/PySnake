@@ -1,21 +1,17 @@
+from Player import Player
 from Snake import Snake
-from Food import Food
 import pygame
 import random
 
 
-class SinglePlayer(object):
+class SinglePlayer(Player):
     def __init__(self, screen, speed):
-        self.screen = screen
-        self.snakes_speed = speed
-        self.background_color = pygame.Color(73, 73, 73)
+        super().__init__(screen, speed)
         # takes in x, y of the snake and the speed of the snake
         self.snake = Snake(50, 50, self.snakes_speed, 800, 600)
-        self.food_stack = [Food(random.randint(0, 700), random.randint(0, 500))]
-
 
     def consumption_check(self):
-        if (self.snake.get_x() < self.food_stack[0].get_x() + self.food_stack[0].get_size() and self.snake.get_x() + self.snake.get_size() > self.food_stack[0].get_x() and self.snake.get_y() < self.food_stack[0].get_y() + self.food_stack[0].get_size() and self.snake.get_y() + self.snake.get_size() > self.food_stack[0].get_y()):
+        if self.collision(self.snake, self.food_stack[0]):
             return True
         else:
             return False
@@ -28,14 +24,13 @@ class SinglePlayer(object):
         for segment in bodies:
             # we check for collision only if theres more than 2 head
             if seg_count > 2:
-                if (self.snake.get_x() < segment.get_x() + segment.get_size() and self.snake.get_x() + segment.get_size() > segment.get_x() and self.snake.get_y() < segment.get_y() + segment.get_size() and self.snake.get_y() + self.snake.get_size() > segment.get_y()):
+                if self.collision(self.snake, segment):
                     return True
             seg_count += 1
 
         # False is returend if and ONLY if we get out of the loop and have iterated over every single segment and found no collision
         # this prevents the check from just checking one segment finding no collision and returning
         return False
-
 
     def game_loop(self, key_input = None):
         pygame.event.pump()
@@ -54,10 +49,8 @@ class SinglePlayer(object):
 
         # check here if the snake ate the food
         if self.consumption_check():
-            # we pop the food from the stack
-            self.food_stack.pop()
-            # and push another food at another random location
-            self.food_stack.append(Food(random.randint(0, 700), random.randint(0, 500)))
+
+            self.spawn_food()
 
             # finally we grow the snake as well by adding a new segment to the snake's body
             self.snake.grow()

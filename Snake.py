@@ -24,9 +24,11 @@ class Snake(SnakeSegment):
         # each segment in the body will return its previous x and y coordinates before it gets updated
         for segment in self.body:
             segment.change_direction(previous_direction)
-            # each segment basically gets updated by the previous x and y coordinates of the segment it, the x and y coordinate
+            # each segment basically gets updated by the previous x and y coordinates of its previous segment (if we are dealing
+            # with the 0th index in the segment array then the 0th index will get the previous value of the head segment), the x and y coordinate
             # is the previous segments x and y coordinates before it gets redrawn, kind of tricky to understand
-
+            # so when in the next frame all the segment will be at the position of their previous segment's position, this creates the snake
+            # body delay effect
             prev_x, prev_y, previous_direction = segment.draw(screen, prev_x, prev_y)
 
     # draws the segment
