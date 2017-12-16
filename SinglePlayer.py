@@ -4,7 +4,6 @@ import pygame
 import random
 from util import *
 
-
 class SinglePlayer(Player):
     def __init__(self, screen, speed):
         super().__init__(screen)
@@ -30,7 +29,6 @@ class SinglePlayer(Player):
                 if self.collision(self.snake, segment):
                     return True
             seg_count += 1
-
         # False is returend if and ONLY if we get out of the loop and have iterated over every single segment and found no collision
         # this prevents the check from just checking one segment finding no collision and returning
         return False
