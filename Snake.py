@@ -23,7 +23,7 @@ class Snake(SnakeSegment):
         for segment in bodies:
             # we check for collision only if theres more than 2 head
             if seg_count > 2:
-                if collision(self.snake, segment):
+                if collision(self, segment):
                     return True
             seg_count += 1
         # False is returend if and ONLY if we get out of the loop and have iterated over every single segment and found no collision
@@ -33,11 +33,17 @@ class Snake(SnakeSegment):
     def get_body(self):
         return self.body
 
-    def get_distance_from_food(self, food):
-        x_distance = self.coordinates[0] - food.get_coor()[0]
-        y_distance = self.coordinates[1] - food.get_coor()[1]
+    def distance_from_food(self, food):
+        x_distance = self.distance_from_food_x(food)
+        y_distance = self.distance_from_food_y(food)
 
-        return math.sqrt(x_distance**2 + y_distance**2)
+        return math.sqrt(x_distance**2 + y_distance**2) - food.get_size()
+
+    def distance_from_food_x(self, food):
+        return self.coordinates[0] - food.get_coor()[0]
+
+    def distance_from_food_y(self, food):
+        return self.coordinates[1] - food.get_coor()[1]
 
     def get_head_coor(self):
         return self.coordinates

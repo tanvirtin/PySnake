@@ -5,14 +5,15 @@ import random
 from util import *
 import cv2
 from collision_checker import *
+import sys
 
 class SinglePlayer(Player):
     def __init__(self, screen, speed):
         super().__init__(screen)
         # takes in x, y of the snake and the speed of the snake
         self.snakes_speed = speed
-        self.snake = Snake(50, 50, self.snakes_speed, WINDOW_SIZE[0], WINDOW_SIZE[0])
-        self.go_through_boundary = False
+        self.snake = Snake(WINDOW_SIZE[0] / 2, WINDOW_SIZE[0] / 2, self.snakes_speed, WINDOW_SIZE[0], WINDOW_SIZE[0])
+        self.go_through_boundary = True
 
     def consumption_check(self):
         if collision(self.snake, self.food_stack[0]):
@@ -53,5 +54,7 @@ class SinglePlayer(Player):
             self.snake.grow()
 
         pygame.display.flip()
+
+        #print("Distance from food: {}".format(self.snake.distance_from_food(self.food_stack[0])))
 
         return end

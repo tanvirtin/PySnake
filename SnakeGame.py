@@ -38,11 +38,14 @@ if __name__ == "__main__":
         elif keyboard.is_pressed("right"):
             direction = "right"
 
+        start = time.time()
         end = game.sp_game_loop(direction)
-        
+        finish = time.time()
+
+
         # new snake is made if this happens
         if end:
             # if some sort of collision occurs we pause and sleep for a very short period of time indicating game being over
             time.sleep(0.5)
-            game.sp.snake = Snake(50, 50, SPEED, WINDOW_SIZE[0], WINDOW_SIZE[0])
+            game.sp.snake = Snake(WINDOW_SIZE[0] / 2, WINDOW_SIZE[0] / 2, SPEED, WINDOW_SIZE[0], WINDOW_SIZE[0])
         time.sleep(0.05)

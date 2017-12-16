@@ -12,5 +12,8 @@ class Food(GameObj):
     def get_coor(self):
         return self.coordinates
 
+    def get_size(self):
+        return self.dimensions[0]
+
     def draw(self, screen):
         screen.blit(self.food_img, (self.coordinates[0], self.coordinates[1]))
