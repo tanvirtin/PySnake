@@ -9,5 +9,8 @@ class Food(GameObj):
         super().__init__(x, y, 20, 20)
         self.food_img = pygame.transform.scale(pygame.image.load("./assets/food.png"), (self.dimensions[0], self.dimensions[0]))
 
+    def get_coor(self):
+        return self.coordinates
+
     def draw(self, screen):
         screen.blit(self.food_img, (self.coordinates[0], self.coordinates[1]))

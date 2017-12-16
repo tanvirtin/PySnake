@@ -3,6 +3,8 @@ from Snake import Snake
 import pygame
 import random
 from util import *
+import cv2
+from collision_checker import *
 
 class SinglePlayer(Player):
     def __init__(self, screen, speed):
@@ -13,25 +15,19 @@ class SinglePlayer(Player):
         self.go_through_boundary = False
 
     def consumption_check(self):
-        if self.collision(self.snake, self.food_stack[0]):
+        if collision(self.snake, self.food_stack[0]):
             return True
         else:
             return False
 
-    def self_collision_check(self):
-        # THERE IS A BUG HERE PLS FIX THIS
-        bodies = self.snake.get_body()
+    def get_game_pixels(self):
+        # get the game pixel
+        pixels = pygame.surfarray.array3d(pygame.display.get_surface())
+        # # convert pixel into greyscale image with only 1 channel
+        # cv2 is far more superior then any other library in image manipulation
+        pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2GRAY) / 255
 
-        seg_count = 0
-        for segment in bodies:
-            # we check for collision only if theres more than 2 head
-            if seg_count > 2:
-                if self.collision(self.snake, segment):
-                    return True
-            seg_count += 1
-        # False is returend if and ONLY if we get out of the loop and have iterated over every single segment and found no collision
-        # this prevents the check from just checking one segment finding no collision and returning
-        return False
+        return pixels
 
     def game_loop(self, key_input = None):
         pygame.event.pump()
@@ -42,11 +38,11 @@ class SinglePlayer(Player):
             food.draw(self.screen)
 
         if not key_input:
-            boundary_collision_check = self.snake.draw(self.screen, self.go_through_boundary)
+            end = self.snake.draw(self.screen, self.go_through_boundary)
 
         else:
             self.snake.change_direction(key_input)
-            boundary_collision_check = self.snake.draw(self.screen, self.go_through_boundary)
+            end = self.snake.draw(self.screen, self.go_through_boundary)
 
         # check here if the snake ate the food
         if self.consumption_check():
@@ -58,4 +54,4 @@ class SinglePlayer(Player):
 
         pygame.display.flip()
 
-        return boundary_collision_check, self.self_collision_check()
+        return end
