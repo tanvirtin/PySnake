@@ -23,7 +23,7 @@ class Snake(SnakeSegment):
         for segment in bodies:
             # we check for collision only if theres more than 2 head
             if seg_count > 2:
-                if collision(self, segment):
+                if snake_collision(self, segment):
                     return True
             seg_count += 1
         # False is returend if and ONLY if we get out of the loop and have iterated over every single segment and found no collision
