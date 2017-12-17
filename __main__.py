@@ -1,6 +1,8 @@
 from SnakeGame import SnakeGame
 import keyboard
 import time
+from Snake import Snake
+from util import *
 
 def main():
     game = SnakeGame()
