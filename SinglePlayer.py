@@ -30,10 +30,26 @@ class SinglePlayer(Player):
 
         return pixels
 
+    def display_info(self):
+        pygame.font.init()
+
+        default_font = pygame.font.get_default_font()
+        font_renderer = pygame.font.Font(default_font, 10)
+
+        # To create a surface containing `Some Text`
+        label = font_renderer.render("Score - {}".format(self.snake.reward), 1, (0,0,0)) # RGB Color
+        self.screen.blit(label, (0,0))
+
+        # draw the food
+        for food in self.food_stack:
+            food.draw(self.screen)
+
     def game_loop(self, key_input = None):
         pygame.event.pump()
 
         self.screen.fill(self.background_color)
+
+        self.display_info()
 
         for food in self.food_stack:
             food.draw(self.screen)
